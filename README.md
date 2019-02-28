@@ -15,7 +15,8 @@ Files:
 SSM_model.RDS - Pre-specified OpenMx state space model 
 LDE_model.RDS - Pre-specified OpenMx latent differential equation model
 sdata.txt - Lateral postural sway data in one individual
-
+outputDiffProc_Rand.csv - Results of the random effects diffusion process simulation
+outputShotNoise_Rand.csv - Results of the random effects shot noise process simulation
 
 References:
 Santos, D. A. and Duarte, M. (2016). A public data set of human balance evaluations.
