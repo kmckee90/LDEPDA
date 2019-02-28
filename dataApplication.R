@@ -17,7 +17,7 @@ convPars<-function(pars){
   return(c("Hz"=freq, "ratio"=rat))
 }
 
-Fstdz<-function(x) (x-mean(x))/sd(x,na.rm=T)
+stdz<-function(x) (x-mean(x))/sd(x,na.rm=T)
 
 
 

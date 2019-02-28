@@ -37,9 +37,9 @@ ncr.sn
 dp.qc<-dp[ apply(dp[,14:16], 1, sum)==0, ]
 sn.qc<-sn[ apply(sn[,14:16], 1, sum)==0, ]
 
-qc.thres<-qchisq(.9, df=4)
-dp.qc<-dp.qc[outlier(dp.qc[,10:13], plot=F)<qc.thres,]
-sn.qc<-sn.qc[outlier(sn.qc[,10:13], plot=F)<qc.thres,]
+# qc.thres<-qchisq(.9, df=4)
+# dp.qc<-dp.qc[outlier(dp.qc[,10:13], plot=F)<qc.thres,]
+# sn.qc<-sn.qc[outlier(sn.qc[,10:13], plot=F)<qc.thres,]
 
 # Convert parameters -------------------------------------------------------
 
@@ -96,6 +96,7 @@ dp.qc<-dp.qc[complete.cases(dp.qc[10:13]),]
 LDE.better<-dp.qc[which((dp.qc$SSM.ssm.A.2.2.-dp.qc$Damping)^2 > (dp.qc$LDE.EA.Zeta_x1ts1-dp.qc$Damping)^2 ),]
 SSM.better<-dp.qc[which((dp.qc$SSM.ssm.A.2.2.-dp.qc$Damping)^2 < (dp.qc$LDE.EA.Zeta_x1ts1-dp.qc$Damping)^2 ),]
 
+nrow(LDE.better)/nrow(dp.qc)
 
 
 LDE.better$measErr<-mround(LDE.better$measErr, .1)
@@ -113,16 +114,17 @@ compGrid<-table(LDE.better$measErr, LDE.better$Period)>table(SSM.better$measErr,
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Period",ylab="Measurement Error", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
-
+box()
 compGrid<-table(LDE.better$measErr, LDE.better$Damping)>table(SSM.better$measErr, SSM.better$Damping)
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Amplitude Ratio",ylab="Measurement Error", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
-
+box()
 compGrid<-table(LDE.better$Period, LDE.better$Damping)>table(SSM.better$Period, SSM.better$Damping)
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Amplitude Ratio",ylab="Period", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
+box()
 dev.off()
 
 
@@ -130,6 +132,8 @@ dev.off()
 LDE.better<-sn.qc[which((sn.qc$SSM.ssm.A.2.2.-sn.qc$Damping)^2 > (sn.qc$LDE.EA.Zeta_x1ts1-sn.qc$Damping)^2 ),]
 SSM.better<-sn.qc[which((sn.qc$SSM.ssm.A.2.2.-sn.qc$Damping)^2 < (sn.qc$LDE.EA.Zeta_x1ts1-sn.qc$Damping)^2 ),]
 
+#Overall LDE performance
+nrow(LDE.better)/nrow(sn.qc)
 
 LDE.better$p<-mround(LDE.better$p, .1)
 SSM.better$p<-mround(SSM.better$p, .1)
@@ -148,33 +152,39 @@ compGrid<-table(LDE.better$measErr, LDE.better$Period)>table(SSM.better$measErr,
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Period",ylab="Measurement Error", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
+box()
 
 compGrid<-table(LDE.better$measErr, LDE.better$Damping)>table(SSM.better$measErr, SSM.better$Damping)
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Amplitude Ratio",ylab="Measurement Error", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
+box()
 
 compGrid<-table(LDE.better$Period, LDE.better$Damping)>table(SSM.better$Period, SSM.better$Damping)
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Amplitude Ratio",ylab="Period", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
+box()
 
 
 compGrid<-table(LDE.better$p, LDE.better$Period)>table(SSM.better$p, SSM.better$Period)
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Period",ylab="Outlier Probability", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
+box()
 
 compGrid<-table(LDE.better$p, LDE.better$measErr)>table(SSM.better$p, SSM.better$measErr)
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Measurement Error",ylab="Outlier Probability", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
+box()
 
 
 compGrid<-table(LDE.better$p, LDE.better$Damping)>table(SSM.better$p, SSM.better$Damping)
 image(t(compGrid), col=c("white","black"), axes=FALSE,xlab="Amplitude Ratio",ylab="Outlier Probability", useRaster=T, cex.lab=1.5)
 axis(1, at = seq(0,1,length.out=ncol(compGrid)/1), labels=colnames(compGrid)[seq(1, ncol(compGrid), 1)],tick=TRUE, cex.axis=1.25)
 axis(2, at = seq(0,1,length.out=nrow(compGrid)/1), labels=rownames(compGrid)[seq(1, nrow(compGrid), 1)],tick=TRUE, cex.axis=1.25)
+box()
 
 dev.off()
 
